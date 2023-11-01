@@ -1,0 +1,132 @@
+ian@ian-Latitude-E7440:~$ gfortran matmule.f -ffree-form -o matmule
+ian@ian-Latitude-E7440:~$ ./matmule
+ Matrix A:
+   2.00000000       3.00000000       4.00000000    
+   3.00000000       4.00000000       5.00000000    
+   4.00000000       5.00000000       6.00000000    
+   5.00000000       6.00000000       7.00000000    
+
+ Matrix B:
+   1.00000000       2.00000000       3.00000000       4.00000000       5.00000000    
+   2.00000000       4.00000000       6.00000000       8.00000000       10.0000000    
+   3.00000000       6.00000000       9.00000000       12.0000000       15.0000000    
+
+ Matrix C:
+   0.00000000      -1.00000000      -2.00000000      -3.00000000      -4.00000000      -5.00000000      -6.00000000      -7.00000000    
+   1.00000000       0.00000000      -1.00000000      -2.00000000      -3.00000000      -4.00000000      -5.00000000      -6.00000000    
+   2.00000000       1.00000000       0.00000000      -1.00000000      -2.00000000      -3.00000000      -4.00000000      -5.00000000    
+   3.00000000       2.00000000       1.00000000       0.00000000      -1.00000000      -2.00000000      -3.00000000      -4.00000000    
+   4.00000000       3.00000000       2.00000000       1.00000000       0.00000000      -1.00000000      -2.00000000      -3.00000000    
+
+ Matrix D:
+   800.000000       500.000000       200.000000      -100.000000      -400.000000      -700.000000      -1000.00000      -1300.00000    
+   1040.00000       650.000000       260.000000      -130.000000      -520.000000      -910.000000      -1300.00000      -1690.00000    
+   1280.00000       800.000000       320.000000      -160.000000      -640.000000      -1120.00000      -1600.00000      -2080.00000    
+   1520.00000       950.000000       380.000000      -190.000000      -760.000000      -1330.00000      -1900.00000      -2470.00000    
+ian@ian-Latitude-E7440:~$ cat matmule.f
+      PROGRAM MATRIXMUL
+      IMPLICIT NONE
+
+      INTEGER I, J, K, L
+      REAL A(4,3), B(3,5), C(5,8), TEMP(4,5), D(4,8)
+
+      ! Initializing matrices A, B, and C with some values.
+      ! For simplicity, just using indices as values.
+      DO I = 1, 4
+         DO J = 1, 3
+            A(I,J) = I + J
+         ENDDO
+      ENDDO
+
+      DO I = 1, 3
+         DO J = 1, 5
+            B(I,J) = I * J
+         ENDDO
+      ENDDO
+
+      DO I = 1, 5
+         DO J = 1, 8
+            C(I,J) = I - J
+         ENDDO
+      ENDDO
+
+      ! Computing matrix TEMP = A * B
+      DO I = 1, 4
+         DO J = 1, 5
+            TEMP(I,J) = 0.0
+            DO K = 1, 3
+               TEMP(I,J) = TEMP(I,J) + A(I,K) * B(K,J)
+            ENDDO
+         ENDDO
+      ENDDO
+
+      ! Computing matrix D = TEMP * C
+      DO I = 1, 4
+         DO J = 1, 8
+            D(I,J) = 0.0
+            DO K = 1, 5
+               D(I,J) = D(I,J) + TEMP(I,K) * C(K,J)
+            ENDDO
+         ENDDO
+      ENDDO
+
+      ! Printing matrices A, B, C, and D
+      WRITE(*,*) 'Matrix A:'
+      DO I = 1, 4
+         WRITE(*,*) (A(I,J), J = 1, 3)
+      ENDDO
+      WRITE(*,*)
+
+      WRITE(*,*) 'Matrix B:'
+      DO I = 1, 3
+         WRITE(*,*) (B(I,J), J = 1, 5)
+      ENDDO
+      WRITE(*,*)
+
+      WRITE(*,*) 'Matrix C:'
+      DO I = 1, 5
+         WRITE(*,*) (C(I,J), J = 1, 8)
+      ENDDO
+      WRITE(*,*)
+
+      WRITE(*,*) 'Matrix D:'
+      DO I = 1, 4
+         WRITE(*,*) (D(I,J), J = 1, 8)
+      ENDDO
+
+      END PROGRAM MATRIXMUL
+ian@ian-Latitude-E7440:~$ sloccount matmule.f
+Have a non-directory at the top, so creating directory top_dir
+Adding /home/ian/matmule.f to top_dir
+Categorizing files.
+Finding a working MD5 command....
+Found a working MD5 command.
+Computing results.
+
+
+SLOC	Directory	SLOC-by-Language (Sorted)
+55      top_dir         fortran=55
+
+
+Totals grouped by language (dominant language first):
+fortran:         55 (100.00%)
+
+
+
+
+Total Physical Source Lines of Code (SLOC)                = 55
+Development Effort Estimate, Person-Years (Person-Months) = 0.01 (0.11)
+ (Basic COCOMO model, Person-Months = 2.4 * (KSLOC**1.05))
+Schedule Estimate, Years (Months)                         = 0.09 (1.10)
+ (Basic COCOMO model, Months = 2.5 * (person-months**0.38))
+Estimated Average Number of Developers (Effort/Schedule)  = 0.10
+Total Estimated Cost to Develop                           = $ 1,285
+ (average salary = $56,286/year, overhead = 2.40).
+SLOCCount, Copyright (C) 2001-2004 David A. Wheeler
+SLOCCount is Open Source Software/Free Software, licensed under the GNU GPL.
+SLOCCount comes with ABSOLUTELY NO WARRANTY, and you are welcome to
+redistribute it under certain conditions as specified by the GNU GPL license;
+see the documentation for details.
+Please credit this data as "generated using David A. Wheeler's 'SLOCCount'."
+ian@ian-Latitude-E7440:~$ 
+
